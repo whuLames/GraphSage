@@ -20,10 +20,6 @@ INPUT_DIM = 1433    # 输入维度
 HIDDEN_DIM = [128, 7]   # 隐藏单元节点数
 NUM_NEIGHBORS_LIST = [10, 10]   # 每阶采样邻居的节点数
 assert len(HIDDEN_DIM) == len(NUM_NEIGHBORS_LIST)
-BTACH_SIZE = 16     # 批处理大小
-EPOCHS = 20
-NUM_BATCH_PER_EPOCH = 20    # 每个epoch循环的批次数
-LEARNING_RATE = 0.01    # 学习率
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 Data = namedtuple('Data', ['x', 'y', 'adjacency_dict'])
@@ -37,8 +33,7 @@ x = data.x / data.x.sum(1, keepdims=True)  # 归一化数据，使得每一行�
 model = GraphSage(input_dim=INPUT_DIM, hidden_dim=HIDDEN_DIM,
                   num_neighbors_list=NUM_NEIGHBORS_LIST).to(DEVICE)
 # print(model)
-criterion = nn.CrossEntropyLoss().to(DEVICE)  # 多分类交叉熵损失函数
-optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=5e-4)  # 优化器
+
 
 
 weight_global = model.state_dict()  # 存储全局参数
